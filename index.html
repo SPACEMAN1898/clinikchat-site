@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClinikChat — Team chat your server can't read</title>
+<meta name="description" content="End-to-end encrypted clinic team chat that lives inside your PMS — Cliniko, Jane, Nookal, Power Diary, Halaxy. Public beta live. Hosted in Australia.">
+<link rel="canonical" href="https://clinikchat.com.au/">
+
+<!-- Open Graph / social share -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ClinikChat">
+<meta property="og:locale" content="en_AU">
+<meta property="og:url" content="https://clinikchat.com.au/">
+<meta property="og:title" content="ClinikChat — Team chat your server can't read">
+<meta property="og:description" content="End-to-end encrypted clinic team chat that lives inside your PMS — Cliniko, Jane, Nookal, Power Diary, Halaxy. Public beta live. Hosted in Australia.">
+<meta property="og:image" content="https://clinikchat.com.au/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ClinikChat — team chat your server can't read. End-to-end encrypted clinic team chat, hosted in Australia.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ClinikChat — Team chat your server can't read">
+<meta name="twitter:description" content="End-to-end encrypted clinic team chat for Australian allied-health teams. Public beta live. Hosted in Australia.">
+<meta name="twitter:image" content="https://clinikchat.com.au/og-image.png">
+
+<link rel="icon" href="assets/praxentis-header-icon-clean.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B163F;
+    --bg-deep:#071026;
+    --panel:#111E4E;
+    --panel-2:#0E1A45;
+    --line:#2E3F73;
+    --line-soft:#22315E;
+    --fg:#F2EFE7;
+    --soft:#C9C9D7;
+    --muted:#A8B3CE;
+    --accent:#8DBEFF;
+    --accent-deep:#4F7BD9;
+    --green:#52C78C;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  ::selection{background:rgba(141,190,255,.28)}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:rgba(11,22,63,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 0}
+  .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+  .brand:hover{text-decoration:none}
+  .brand img{width:132px;height:auto;display:block}
+  .brand .prod{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  nav ul{display:flex;gap:28px;list-style:none}
+  nav a{color:var(--muted);font-size:14px;font-weight:500;transition:color .2s ease-out}
+  nav a:hover{color:var(--fg);text-decoration:none}
+  .nav-cta{font-family:var(--mono);font-size:13px;font-weight:500;color:#0B163F;background:var(--accent);padding:9px 18px;border-radius:8px;transition:background .2s ease-out}
+  .nav-cta:hover{background:#A9CFFF;text-decoration:none}
+  @media(max-width:1024px){nav ul{display:none}}
+
+  /* hero */
+  .hero{padding:96px 0 88px;border-bottom:1px solid var(--line-soft);background:radial-gradient(900px 480px at 78% -10%,rgba(79,123,217,.22),transparent 60%)}
+  .hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+  @media(max-width:1024px){.hero-grid{grid-template-columns:1fr;gap:48px}}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:24px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--accent-deep)}
+  h1{font-size:clamp(2.5rem,5.4vw,3.9rem);line-height:1.08;font-weight:700;letter-spacing:-.025em;margin-bottom:22px}
+  h1 .ice{color:var(--accent)}
+  .lede{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--soft);max-width:34rem;margin-bottom:32px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+  .btn{display:inline-block;font-weight:600;font-size:15px;padding:14px 28px;border-radius:8px;transition:background .2s ease-out,border-color .2s ease-out}
+  .btn-primary{background:var(--accent);color:#0B163F}
+  .btn-primary:hover{background:#A9CFFF;text-decoration:none}
+  .btn-ghost{border:1px solid var(--line);color:var(--fg)}
+  .btn-ghost:hover{border-color:var(--accent-deep);text-decoration:none}
+  .hero-meta{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2.4s ease-out infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(82,199,140,.45)}70%{box-shadow:0 0 0 9px rgba(82,199,140,0)}100%{box-shadow:0 0 0 0 rgba(82,199,140,0)}}
+
+  /* chat mock */
+  .chat{
+    background:var(--bg-deep);border:1px solid var(--line);border-radius:18px;overflow:hidden;
+    box-shadow:0 30px 70px rgba(4,9,28,.55);
+  }
+  .chat-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line-soft);background:var(--panel-2)}
+  .chat-avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent-deep),var(--accent));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#0B163F}
+  .chat-head .who{line-height:1.3}
+  .chat-head .who b{display:block;font-size:14px}
+  .chat-head .who span{font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .enc-pill{
+    margin-left:auto;display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:#9FE0BC;background:rgba(82,199,140,.1);border:1px solid #2C5B43;border-radius:999px;padding:5px 12px;
+    position:relative;overflow:hidden;
+  }
+  .enc-pill::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(105deg,transparent 30%,rgba(159,224,188,.22) 50%,transparent 70%);
+    transform:translateX(-100%);animation:shimmer 3.2s ease-in-out infinite;
+  }
+  @keyframes shimmer{60%,100%{transform:translateX(100%)}}
+  .chat-body{padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+  .msg{max-width:82%;padding:11px 16px;border-radius:14px;font-size:14px;line-height:1.5;position:relative}
+  .msg .lock{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;letter-spacing:.06em;margin-top:7px;text-transform:uppercase}
+  .msg.them{align-self:flex-start;background:var(--panel);border:1px solid var(--line-soft);border-bottom-left-radius:4px;color:var(--soft)}
+  .msg.them .lock{color:var(--muted)}
+  .msg.me{align-self:flex-end;background:linear-gradient(135deg,var(--accent-deep),#3E66BC);border-bottom-right-radius:4px;color:#F4F8FF}
+  .msg.me .lock{color:#CFE3FF}
+  .chat-input{display:flex;align-items:center;gap:10px;margin:0 20px 20px;padding:12px 16px;border:1px solid var(--line-soft);border-radius:12px;background:var(--panel-2);color:var(--muted);font-size:13.5px}
+  .chat-input .send{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--accent);border:1px solid var(--accent-deep);border-radius:8px;padding:4px 10px}
+
+  /* status strip */
+  .strip{border-bottom:1px solid var(--line-soft);background:var(--bg-deep)}
+  .strip-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft)}
+  .strip-cell{background:var(--bg-deep);padding:22px 26px}
+  .strip-cell .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .strip-cell .v{font-size:1.02rem;font-weight:600}
+  .strip-cell .v small{display:block;font-family:var(--mono);font-size:11px;font-weight:400;color:var(--muted);margin-top:4px}
+  @media(max-width:1024px){.strip-inner{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.strip-inner{grid-template-columns:1fr}}
+
+  /* sections */
+  section{padding:88px 0;border-bottom:1px solid var(--line-soft)}
+  .sec-head{max-width:46rem;margin-bottom:52px}
+  h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:700;letter-spacing:-.015em;line-height:1.2;margin-bottom:16px}
+  .sec-head p{color:var(--muted);font-size:1.05rem}
+  .mono-label{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:block}
+
+  /* encryption explainer */
+  .enc-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  @media(max-width:1024px){.enc-grid{grid-template-columns:1fr;gap:36px}}
+  .enc-steps{list-style:none;display:grid;gap:0}
+  .enc-steps li{display:grid;grid-template-columns:44px 1fr;gap:18px;padding:22px 0;border-bottom:1px solid var(--line-soft)}
+  .enc-steps li:last-child{border-bottom:none}
+  .enc-steps .n{
+    width:40px;height:40px;border-radius:12px;border:1px solid var(--accent-deep);color:var(--accent);
+    font-family:var(--mono);font-size:13px;display:flex;align-items:center;justify-content:center;flex:none;
+  }
+  .enc-steps h3{font-size:1.02rem;font-weight:600;margin-bottom:6px}
+  .enc-steps p{color:var(--muted);font-size:.93rem}
+  .enc-quote{
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:40px 36px;position:sticky;top:96px;
+  }
+  @media(max-width:1024px){.enc-quote{position:static}}
+  .enc-quote blockquote{font-size:clamp(1.3rem,2.4vw,1.65rem);font-weight:500;letter-spacing:-.01em;line-height:1.4;margin-bottom:22px}
+  .enc-quote blockquote .ice{color:var(--accent)}
+  .crypto-spec{font-family:var(--mono);font-size:12.5px;color:var(--muted);line-height:2;border-top:1px solid var(--line-soft);padding-top:18px}
+  .crypto-spec b{color:var(--fg);font-weight:500}
+
+  /* integrations & platforms */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:1024px){.two-col{grid-template-columns:1fr}}
+  .panel{background:var(--panel-2);border:1px solid var(--line-soft);border-radius:16px;padding:36px}
+  .panel h3{font-size:1.25rem;font-weight:700;margin-bottom:8px}
+  .panel > p{color:var(--muted);font-size:.95rem;margin-bottom:24px}
+  .pms{display:flex;flex-wrap:wrap;gap:10px}
+  .pms span{
+    font-family:var(--mono);font-size:13px;color:var(--fg);
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 16px;
+    transition:border-color .2s ease-out,color .2s ease-out;
+  }
+  .pms span:hover{border-color:var(--accent-deep);color:var(--accent)}
+  .plats{list-style:none;display:grid;gap:14px}
+  .plats li{display:flex;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line-soft);border-radius:10px;padding:14px 18px}
+  .plats .pi{width:34px;height:34px;border-radius:9px;background:rgba(79,123,217,.16);border:1px solid var(--accent-deep);display:flex;align-items:center;justify-content:center;flex:none}
+  .plats b{display:block;font-size:.95rem}
+  .plats small{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+
+  /* hosting */
+  .host-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:1024px){.host-grid{grid-template-columns:1fr}}
+  .h-card{background:var(--panel-2);border:1px solid var(--line-soft);border-radius:14px;padding:30px 28px;transition:border-color .2s ease-out}
+  .h-card:hover{border-color:var(--accent-deep)}
+  .h-card .h-k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px}
+  .h-card h3{font-size:1.05rem;font-weight:600;margin-bottom:8px}
+  .h-card p{color:var(--muted);font-size:.92rem}
+
+  /* pricing */
+  .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  @media(max-width:1024px){.pricing{grid-template-columns:1fr}}
+  .price{background:var(--panel-2);border:1px solid var(--line-soft);border-radius:16px;padding:34px 30px;display:flex;flex-direction:column}
+  .price.feature{border-color:var(--accent-deep);background:var(--panel);box-shadow:0 20px 50px rgba(4,9,28,.4)}
+  .price .tier{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+  .price .amount{font-size:2.2rem;font-weight:700;letter-spacing:-.02em;line-height:1}
+  .price .amount small{font-size:.9rem;font-weight:500;color:var(--muted);letter-spacing:0}
+  .price .per{font-family:var(--mono);font-size:12px;color:var(--muted);margin:8px 0 22px}
+  .price ul{list-style:none;display:grid;gap:10px;margin-bottom:26px}
+  .price li{color:var(--soft);font-size:.93rem;display:flex;gap:10px}
+  .price li::before{content:"✓";color:var(--green);font-family:var(--mono);flex:none}
+  .price .p-cta{margin-top:auto;text-align:center}
+  .planned{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);border-radius:999px;padding:3px 11px;display:inline-block;margin-left:10px;vertical-align:middle}
+
+  /* final CTA */
+  .final{background:radial-gradient(700px 360px at 50% 0%,rgba(79,123,217,.25),transparent 65%);text-align:center}
+  .final h2{margin-bottom:16px}
+  .final p{color:var(--soft);max-width:36rem;margin:0 auto 34px}
+  .final .btn-primary{font-size:16px;padding:16px 36px}
+  .final .alt{display:block;margin-top:18px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+
+  /* footer */
+  footer.site{padding:56px 0 44px}
+  .foot-grid{display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap;align-items:flex-start}
+  .foot-grid img{width:120px;height:auto;opacity:.9}
+  .foot-meta{font-size:14px;color:var(--muted);line-height:2}
+  .foot-meta a{color:var(--muted)}
+  .foot-meta a:hover{color:var(--accent)}
+  .privacy{margin-top:36px;padding-top:22px;border-top:1px solid var(--line-soft);font-size:12.5px;color:#8A95B8;font-family:var(--mono);letter-spacing:.02em}
+
+  /* register-interest form */
+  .lead-form{max-width:640px;display:grid;gap:20px}
+  .lead-form .field{display:grid;gap:8px}
+  .lead-form label{font-size:.9rem;font-weight:500;color:var(--soft)}
+  .lead-form label .opt{color:var(--muted);font-weight:400}
+  .lead-form input,.lead-form select{
+    width:100%;font-family:var(--sans);font-size:15px;color:var(--fg);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+    transition:border-color .2s ease-out,box-shadow .2s ease-out;
+  }
+  .lead-form select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 55%,calc(100% - 15px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:40px}
+  .lead-form input:focus,.lead-form select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(141,190,255,.25)}
+  .lead-form input:user-invalid{border-color:#E06A6A}
+  .lead-form .consent{font-size:.85rem;color:var(--muted);line-height:1.6;margin:-4px 0 4px}
+  .lead-form button[type=submit]{justify-self:start;cursor:pointer;border:none;font-family:var(--sans)}
+  .lead-form button[type=submit]:disabled{opacity:.6;cursor:progress}
+  .form-status{font-size:.95rem;font-weight:500;min-height:1.2em;margin:0}
+  .form-status.ok{color:var(--green)}
+  .form-status.err{color:#E88}
+  /* honeypot — visually removed but still in the DOM + tab-excluded */
+  .lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  @media(max-width:600px){.lead-form button[type=submit]{justify-self:stretch;text-align:center}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "ClinikChat",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web, Chrome, iOS, Android",
+      "url": "https://clinikchat.com.au/",
+      "description": "End-to-end encrypted clinic team chat that lives inside your practice-management system, for Australian allied-health teams. Public beta live. Hosted in Australia.",
+      "softwareVersion": "public beta",
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Public beta",
+          "price": "0",
+          "priceCurrency": "AUD",
+          "description": "Free during the public beta."
+        },
+        {
+          "@type": "Offer",
+          "name": "Clinic",
+          "price": "8",
+          "priceCurrency": "AUD",
+          "description": "Planned post-beta pricing, per seat per month."
+        }
+      ],
+      "publisher": { "@type": "Organization", "name": "Praxentis" }
+    },
+    {
+      "@type": "Organization",
+      "name": "Praxentis",
+      "url": "https://clinikchat.com.au/",
+      "brand": { "@type": "Brand", "name": "ClinikChat" },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Adelaide",
+        "addressRegion": "SA",
+        "addressCountry": "AU"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="ClinikChat home — a Praxentis Labs product">
+      <img src="assets/praxentis-lockup-dark-clean.png" alt="Praxentis" width="132">
+      <span class="prod">CLINIKCHAT</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#encryption">Encryption</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#hosting">Hosting</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+      </ul>
+    </nav>
+    <a class="nav-cta" href="https://app.clinikchat.com.au">join the beta</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Praxentis Labs · Public beta</p>
+        <h1>Team chat your <span class="ice">server can't read.</span></h1>
+        <p class="lede">End-to-end encrypted clinic team chat that lives inside your PMS — Cliniko, Jane, Nookal, Power Diary, Halaxy. Built for Australian allied-health teams.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://app.clinikchat.com.au">Join the public beta</a>
+          <a class="btn btn-ghost" href="#encryption">How the encryption works</a>
+        </div>
+        <p class="hero-meta"><span class="live-dot" aria-hidden="true"></span> Live since 2026-04-24 · clinikchat.com.au</p>
+      </div>
+
+      <!-- CSS-only encrypted chat mock -->
+      <div class="chat" role="img" aria-label="Stylised ClinikChat conversation. Messages between a practitioner and reception, each marked end-to-end encrypted.">
+        <div class="chat-head" aria-hidden="true">
+          <div class="chat-avatar">CC</div>
+          <div class="who"><b># front-desk</b><span>2 members · TADC clinic</span></div>
+          <span class="enc-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            encrypted
+          </span>
+        </div>
+        <div class="chat-body" aria-hidden="true">
+          <div class="msg them">
+            Can you move the 3:15 to Thursday? Room 2 is double-booked.
+            <span class="lock"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> end-to-end</span>
+          </div>
+          <div class="msg me">
+            Done — and I've flagged it in the schedule notes.
+            <span class="lock"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> end-to-end</span>
+          </div>
+          <div class="msg them">
+            Perfect. Reminder list for tomorrow is ready when you are.
+            <span class="lock"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> end-to-end</span>
+          </div>
+        </div>
+        <div class="chat-input" aria-hidden="true">
+          Message # front-desk — encrypted before it leaves your device
+          <span class="send">send ⌘↵</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS STRIP -->
+  <div class="strip">
+    <div class="wrap" style="padding:0">
+      <div class="strip-inner">
+        <div class="strip-cell"><div class="k">Status</div><div class="v">Public beta<small>live since 2026-04-24</small></div></div>
+        <div class="strip-cell"><div class="k">Encryption</div><div class="v">End-to-end<small>TweetNaCl — X25519</small></div></div>
+        <div class="strip-cell"><div class="k">Hosting</div><div class="v">Australia<small>Sydney · ap-southeast-2</small></div></div>
+        <div class="strip-cell"><div class="k">Price</div><div class="v">Free in beta<small>plans from $8 AUD/seat</small></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENCRYPTION -->
+  <section id="encryption">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono-label">01 — Encryption</span>
+        <h2>Encrypted on your device. Readable only by your team.</h2>
+        <p>Most team chat is encrypted in transit — the server can still read everything. ClinikChat encrypts each message on the sender's device, and only your team's devices hold the keys.</p>
+      </div>
+      <div class="enc-grid">
+        <ol class="enc-steps">
+          <li>
+            <span class="n">01</span>
+            <div><h3>Keys live on your devices</h3><p>Each team member's device generates its own keypair. Private keys never leave the device — they're never uploaded, emailed, or recoverable by us.</p></div>
+          </li>
+          <li>
+            <span class="n">02</span>
+            <div><h3>Messages are sealed before sending</h3><p>Every message is encrypted on the sender's device for the intended recipients before it touches the network.</p></div>
+          </li>
+          <li>
+            <span class="n">03</span>
+            <div><h3>The server only ever sees ciphertext</h3><p>Our infrastructure routes and stores encrypted payloads. There is nothing readable on the server to leak, subpoena, or browse.</p></div>
+          </li>
+          <li>
+            <span class="n">04</span>
+            <div><h3>Only your team's devices can open them</h3><p>Decryption happens locally, on the recipient's device. If you're not in the conversation, the message is mathematically out of reach.</p></div>
+          </li>
+        </ol>
+        <div class="enc-quote">
+          <blockquote>“<span class="ice">Even Praxentis</span> can't decrypt your team's chat.”</blockquote>
+          <div class="crypto-spec">
+            library — <b>TweetNaCl</b><br>
+            key exchange — <b>X25519</b><br>
+            cipher — <b>XSalsa20-Poly1305</b><br>
+            server visibility — <b>ciphertext only</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS & PLATFORMS -->
+  <section id="integrations">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono-label">02 — Fits the clinic</span>
+        <h2>It lives where your team already works.</h2>
+        <p>ClinikChat isn't another app to remember. It sits alongside your practice-management system, on every surface your team uses.</p>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>PMS integrations</h3>
+          <p>Designed to live inside the practice-management platforms Australian clinics already run.</p>
+          <div class="pms" role="list">
+            <span role="listitem">Cliniko</span>
+            <span role="listitem">Jane</span>
+            <span role="listitem">Nookal</span>
+            <span role="listitem">Power Diary</span>
+            <span role="listitem">Halaxy</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Every platform</h3>
+          <p>One encrypted conversation, available wherever the working day happens.</p>
+          <ul class="plats">
+            <li>
+              <span class="pi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8DBEFF" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+              <div><b>Web app</b><small>React · TypeScript — app.clinikchat.com.au</small></div>
+            </li>
+            <li>
+              <span class="pi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8DBEFF" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v5.5M4.3 16.5l4.8-2.7M19.7 16.5l-4.8-2.7"/></svg></span>
+              <div><b>Chrome extension</b><small>Manifest V3 — chat over your PMS tab</small></div>
+            </li>
+            <li>
+              <span class="pi" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8DBEFF" stroke-width="1.8" stroke-linecap="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></span>
+              <div><b>Mobile</b><small>Expo / React Native — iOS &amp; Android</small></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOSTING -->
+  <section id="hosting">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono-label">03 — Australian by design</span>
+        <h2>Patient data never leaves the country.</h2>
+        <p>A clinic's internal conversation is operational data. ClinikChat keeps it on Australian soil, under Australian law, as a matter of architecture — not policy promises.</p>
+      </div>
+      <div class="host-grid">
+        <div class="h-card">
+          <span class="h-k">Application</span>
+          <h3>Fly.io — Sydney region</h3>
+          <p>The ClinikChat API and realtime service run in Fly.io's Sydney region, keeping traffic and storage inside Australia.</p>
+        </div>
+        <div class="h-card">
+          <span class="h-k">Storage</span>
+          <h3>AWS — ap-southeast-2</h3>
+          <p>Encrypted attachments and backups live in AWS Sydney (ap-southeast-2). No offshore replication, no foreign regions.</p>
+        </div>
+        <div class="h-card">
+          <span class="h-k">Legal posture</span>
+          <h3>Privacy Act 1988 (Cth)</h3>
+          <p>Built and operated in alignment with the Privacy Act 1988 (Cth) and the Australian Privacy Principles — a brand feature, not a footnote.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono-label">04 — Pricing</span>
+        <h2>Free during the public beta.</h2>
+        <p>Join now and use ClinikChat at no cost while it's in beta. Planned post-beta pricing is published below — simple, per-seat, in Australian dollars.</p>
+      </div>
+      <div class="pricing">
+        <div class="price feature">
+          <div class="tier">Public beta</div>
+          <div class="amount">$0</div>
+          <div class="per">per seat / month — until beta ends</div>
+          <ul>
+            <li>Full end-to-end encrypted team chat</li>
+            <li>Web, Chrome extension and mobile</li>
+            <li>Live since 2026-04-24 — 901 unit tests passing at launch baseline</li>
+          </ul>
+          <a class="btn btn-primary p-cta" href="https://app.clinikchat.com.au">Join the public beta</a>
+        </div>
+        <div class="price">
+          <div class="tier">Solo <span class="planned">Planned</span></div>
+          <div class="amount">$0</div>
+          <div class="per">free forever — up to 3 seats</div>
+          <ul>
+            <li>For small teams and solo practitioners</li>
+            <li>Same encryption, same platforms</li>
+            <li>No credit card required</li>
+          </ul>
+          <a class="btn btn-ghost p-cta" href="#register">Register interest</a>
+        </div>
+        <div class="price">
+          <div class="tier">Clinic <span class="planned">Planned</span></div>
+          <div class="amount"><small>from </small>$8<small> AUD</small></div>
+          <div class="per">per seat / month</div>
+          <ul>
+            <li>For full clinic teams — practitioners + reception</li>
+            <li>Everything in Solo, at clinic scale</li>
+            <li>Australian support from the person who built it</li>
+          </ul>
+          <a class="btn btn-ghost p-cta" href="#register">Register interest</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER INTEREST -->
+  <section id="register">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono-label">Register interest</span>
+        <h2>Not ready to start today? Tell us about your clinic.</h2>
+        <p>We'll let you know when the plan you need is ready. Which practice-management system we build for next is driven by what clinics tell us here — so this is the most useful field on the page.</p>
+      </div>
+      <form class="lead-form" id="lead-form" method="POST" action="https://api.clinikchat.com.au/api/v1/leads">
+        <div class="field">
+          <label for="lead-name">Your name</label>
+          <input id="lead-name" name="name" type="text" required maxlength="120" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="lead-clinic">Clinic name</label>
+          <input id="lead-clinic" name="clinicName" type="text" required maxlength="160" autocomplete="organization">
+        </div>
+        <div class="field">
+          <label for="lead-email">Email</label>
+          <input id="lead-email" name="email" type="email" required maxlength="254" autocomplete="email" inputmode="email">
+        </div>
+        <div class="field">
+          <label for="lead-pms">Practice-management system</label>
+          <select id="lead-pms" name="pms" required>
+            <option value="" disabled selected>Select your PMS…</option>
+            <option>Cliniko</option>
+            <option>Jane</option>
+            <option>Nookal</option>
+            <option>Power Diary</option>
+            <option>Halaxy</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lead-team">Team size <span class="opt">(optional)</span></label>
+          <select id="lead-team" name="teamSize">
+            <option value="">Prefer not to say</option>
+            <option value="1-3">1–3</option>
+            <option value="4-10">4–10</option>
+            <option value="11-25">11–25</option>
+            <option value="26+">26+</option>
+          </select>
+        </div>
+        <!-- Honeypot: hidden from people, filled by bots. If set, the server
+             silently accepts without storing. Do not remove. -->
+        <div class="hp" aria-hidden="true">
+          <label for="lead-website">Website</label>
+          <input id="lead-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <p class="consent">By submitting, you agree we may email you about ClinikChat. We store your contact details only — never patient data — and you can ask us to delete them at any time. See our <a href="https://app.clinikchat.com.au/privacy">privacy policy</a>.</p>
+        <button type="submit" class="btn btn-primary">Register interest</button>
+        <p class="form-status" id="lead-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final" style="border-bottom:none">
+    <div class="wrap">
+      <span class="mono-label">05 — Get started</span>
+      <h2>Your team's conversation belongs to your team.</h2>
+      <p>A secure, end-to-end encrypted messenger for Australian healthcare teams — already live, already in clinics, free while it's in beta.</p>
+      <a class="btn btn-primary" href="https://app.clinikchat.com.au">Join the public beta</a>
+      <span class="alt"><a href="https://app.clinikchat.com.au">app.clinikchat.com.au</a> · <a href="https://clinikchat.com.au">clinikchat.com.au</a></span>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <img src="assets/praxentis-lockup-dark-clean.png" alt="Praxentis" width="120">
+      <div class="foot-meta">
+        <!-- INTERIM contact — nick@weiland.com.au matches the app's /privacy and
+             /terms pages. Swap to the final Praxentis address once decided (see
+             HANDOFF-REPORT.md → Open Questions). The company link was removed
+             rather than guessed; add the real Praxentis URL when known. -->
+        Praxentis · Adelaide, South Australia · <a href="mailto:nick@weiland.com.au">nick@weiland.com.au</a><br>
+        <a href="https://clinikchat.com.au">clinikchat.com.au</a> · <a href="#top">back to top ↑</a><br>
+        <a href="https://app.clinikchat.com.au/privacy">Privacy policy</a> · <a href="https://app.clinikchat.com.au/terms">Terms of service</a> · <a href="/security.html">Security</a>
+      </div>
+    </div>
+    <p class="privacy">Aligned with the Privacy Act 1988 (Cth) and the Australian Privacy Principles. Patient data never leaves the country.</p>
+  </div>
+</footer>
+
+<script>
+// Progressive enhancement for the register-interest form. Without this script
+// the form still works: it does a native POST to the API, which returns an HTML
+// thank-you page. With it, we submit in the background and show an inline,
+// screen-reader-announced status instead of navigating away.
+(function () {
+  var form = document.getElementById('lead-form');
+  if (!form) return;
+  var status = document.getElementById('lead-status');
+  var btn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', function (e) {
+    // The form has native HTML5 validation, so this handler only runs once the
+    // fields are valid. Take over the submit to avoid a full page navigation.
+    e.preventDefault();
+    status.className = 'form-status';
+    status.textContent = '';
+
+    var data = {};
+    new FormData(form).forEach(function (value, key) { data[key] = value; });
+
+    var label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    fetch(form.action, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      credentials: 'omit',
+      body: JSON.stringify(data)
+    }).then(function (res) {
+      if (res.ok) {
+        form.reset();
+        status.className = 'form-status ok';
+        status.textContent = 'Thanks — we’ve got your details and will be in touch.';
+      } else if (res.status === 429) {
+        status.className = 'form-status err';
+        status.textContent = 'Too many submissions from your network. Please try again later.';
+      } else {
+        status.className = 'form-status err';
+        status.textContent = 'Sorry — something went wrong. Please check your details and try again.';
+      }
+    }).catch(function () {
+      status.className = 'form-status err';
+      status.textContent = 'Network error — please check your connection and try again.';
+    }).finally(function () {
+      btn.disabled = false;
+      btn.textContent = label;
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

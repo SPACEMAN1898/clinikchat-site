@@ -1,0 +1,7 @@
+# This repo is a deploy target only — its tree must contain nothing but the
+# synced marketing site (index.html, security.html, assets/, robots.txt,
+# sitemap.xml, og-image.png) plus CNAME. Ignore stray tooling droppings so a
+# greedy `git add -A` during publish can never sweep them into a PUBLIC commit.
+.planning/
+.DS_Store
+node_modules/

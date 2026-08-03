@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security — ClinikChat</title>
+<meta name="description" content="How ClinikChat protects clinic conversations: end-to-end encryption with TweetNaCl (X25519, XSalsa20-Poly1305), Australian hosting, and an internal security self-assessment against OWASP ASVS L2.">
+<link rel="canonical" href="https://clinikchat.com.au/security.html">
+<link rel="icon" href="assets/praxentis-header-icon-clean.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B163F;--bg-deep:#071026;--panel:#111E4E;--panel-2:#0E1A45;
+    --line:#2E3F73;--line-soft:#22315E;--fg:#F2EFE7;--soft:#C9C9D7;--muted:#A8B3CE;
+    --accent:#8DBEFF;--accent-deep:#4F7BD9;--green:#52C78C;
+    --mono:'JetBrains Mono',ui-monospace,monospace;--sans:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:820px;margin:0 auto;padding:0 24px}
+  header{border-bottom:1px solid var(--line-soft);background:var(--bg-deep)}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 0}
+  .brand{display:flex;align-items:center;gap:14px}
+  .brand img{width:120px;height:auto;display:block}
+  .brand .prod{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+  .nav a.back{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--line-soft)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+  h1{font-size:clamp(2rem,4.4vw,2.9rem);line-height:1.1;font-weight:700;letter-spacing:-.02em;margin-bottom:18px}
+  .lede{font-size:1.1rem;color:var(--soft);max-width:40rem}
+  section{padding:48px 0;border-bottom:1px solid var(--line-soft)}
+  h2{font-size:1.5rem;font-weight:700;letter-spacing:-.01em;margin-bottom:14px}
+  h3{font-size:1.05rem;font-weight:600;margin:24px 0 8px}
+  p{color:var(--soft);margin-bottom:14px}
+  ul{list-style:none;display:grid;gap:10px;margin:14px 0 20px}
+  li{color:var(--soft);display:flex;gap:12px}
+  li::before{content:"→";color:var(--accent);font-family:var(--mono);flex:none}
+  .spec{font-family:var(--mono);font-size:13px;color:var(--muted);line-height:2;background:var(--panel-2);border:1px solid var(--line-soft);border-radius:12px;padding:20px 22px;margin:16px 0}
+  .spec b{color:var(--fg);font-weight:500}
+  .note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent-deep);border-radius:10px;padding:18px 20px;margin:16px 0;color:var(--soft);font-size:.95rem}
+  .note b{color:var(--fg)}
+  footer{padding:40px 0;font-size:13px;color:var(--muted)}
+  footer a{color:var(--muted)}
+  code{font-family:var(--mono);font-size:.9em;background:var(--panel-2);padding:2px 6px;border-radius:5px;color:var(--soft)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/" aria-label="ClinikChat home">
+      <img src="assets/praxentis-lockup-dark-clean.png" alt="Praxentis">
+      <span class="prod">CLINIKCHAT</span>
+    </a>
+    <a class="back" href="/">← back to home</a>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Security</p>
+      <h1>How ClinikChat protects your clinic's conversation.</h1>
+      <p class="lede">This page is for the technically inclined — a practice principal's IT person, a security-conscious clinician, or an evaluator doing due diligence. It states what we actually do, and is careful to separate what is verifiable today from what we are committed to doing next.</p>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <h2>End-to-end encryption</h2>
+      <p>Most team chat is encrypted <em>in transit</em> — the server can still read every message. ClinikChat encrypts each message on the sender's device for the intended recipients before it touches the network, and only your team's devices hold the keys to open it.</p>
+      <p>The cryptography is <b>not homegrown</b>. It is the standard NaCl "box" construction provided by <a href="https://tweetnacl.js.org/" rel="noopener">TweetNaCl</a>, an audited, widely used open-source library:</p>
+      <div class="spec">
+        library — <b>TweetNaCl</b> (tweetnacl-js)<br>
+        key exchange — <b>X25519</b> (Curve25519 Diffie–Hellman)<br>
+        message cipher — <b>XSalsa20-Poly1305</b> authenticated encryption<br>
+        server visibility — <b>ciphertext + public keys only</b>
+      </div>
+      <h3>What this means concretely</h3>
+      <ul>
+        <li>Each member's device generates its own X25519 keypair. The private key never leaves the device unencrypted — it is sealed with a key derived from the member's own credentials before it is ever stored.</li>
+        <li>Every message is sealed on the sender's device for the recipients' public keys. The server routes and stores only the resulting ciphertext.</li>
+        <li>There is nothing readable on the server to leak, subpoena, or browse. Even we — Praxentis — cannot decrypt your team's chat.</li>
+      </ul>
+      <p class="note">A technical evaluator can verify the primitive independently: <code>nacl.box</code> is X25519 + XSalsa20-Poly1305 as specified by NaCl, and TweetNaCl is public and reviewable. We are happy to walk a prospective clinic's security contact through the client-side encryption path on request.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Security assessment posture</h2>
+      <p>We hold ourselves to a published standard and are candid about the stage we are at.</p>
+      <p>ClinikChat has completed an <b>internal security self-assessment</b> against the <a href="https://owasp.org/www-project-application-security-verification-standard/" rel="noopener">OWASP ASVS</a> v4.0.3 at Level 2 (the level intended for applications handling sensitive personal data), most recently on 2026-04-23. The assessment maps to publicly documented methodologies — PTES, OWASP WSTG v4.2, and NIST SP 800-115 — and uses standard open-source tooling: Semgrep (SAST), Trivy and Grype (dependency and container scanning), Gitleaks (secret scanning), and Syft (SBOM).</p>
+      <h3>Summarised result</h3>
+      <ul>
+        <li>Authentication, session management, access control, and input validation: assessed as meeting ASVS L2.</li>
+        <li>Stored cryptography: partial — end-to-end encryption is in place; at-rest database encryption is a deployment configuration.</li>
+      </ul>
+      <p class="note"><b>Be clear about what this is.</b> This is a <b>self-assessment by our own engineering team</b>, not an independent third-party audit. It demonstrates methodology and posture — it is not a certification. We have committed that on entering alpha testing with more than 15 users, or on first revenue (whichever comes first), we will commission an <b>independent external penetration test from a CREST-certified firm</b>, and that engagement's findings will supersede this self-assessment as our primary security evidence.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Where your data lives</h2>
+      <p>ClinikChat is built to keep clinic data in Australia as a matter of architecture, not just policy.</p>
+      <ul>
+        <li>The API and realtime service run in Fly.io's Sydney region (<code>syd</code>).</li>
+        <li>Encrypted attachments and backups are stored in AWS Sydney (<code>ap-southeast-2</code>).</li>
+        <li>Built and operated in alignment with the Privacy Act 1988 (Cth) and the Australian Privacy Principles.</li>
+      </ul>
+      <p class="note"><b>One honest exception.</b> Mobile push notifications rely on Apple and Google's notification networks (and Expo's push service), which operate internationally. Delivering a push to a phone unavoidably shares a device push token and minimal metadata with those services — never message content, which stays end-to-end encrypted. This is disclosed in our privacy policy.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Reporting a vulnerability</h2>
+      <p>If you believe you have found a security issue in ClinikChat, we want to hear from you. Please email <a href="mailto:nick@weiland.com.au">nick@weiland.com.au</a> with enough detail to reproduce the issue, and give us a reasonable window to respond before any public disclosure. We do not currently run a paid bug-bounty programme, but we will acknowledge your report and keep you updated.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    Praxentis · Adelaide, South Australia · <a href="/">clinikchat.com.au</a> ·
+    <a href="https://app.clinikchat.com.au/privacy">Privacy policy</a> ·
+    <a href="https://app.clinikchat.com.au/terms">Terms of service</a>
+  </div>
+</footer>
+
+</body>
+</html>
