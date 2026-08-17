@@ -240,6 +240,13 @@
   /* honeypot — visually removed but still in the DOM + tab-excluded */
   .lead-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
   @media(max-width:600px){.lead-form button[type=submit]{justify-self:stretch;text-align:center}}
+
+/* Praxentis family cross-nav (footer strip) */
+.family-nav{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 20px;padding-bottom:18px;margin-bottom:26px;border-bottom:1px solid var(--line);font-size:13.5px}
+.family-nav .family-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.family-nav a{color:var(--muted);text-decoration:none;transition:color .15s}
+.family-nav a:hover{color:var(--accent)}
+.family-nav span[aria-current]{color:var(--fg,var(--ink));font-weight:600}
 </style>
 <script type="application/ld+json">
 {
@@ -594,6 +601,13 @@
 
 <footer class="site">
   <div class="wrap">
+    <nav class="family-nav" aria-label="Praxentis family">
+      <span class="family-label">Praxentis family</span>
+      <a href="https://praxentislabs.com.au">Labs</a>
+      <a href="https://praxentisai.com.au">AI</a>
+      <a href="https://praxentishealth.com.au">Health</a>
+      <span aria-current="true">ClinikChat</span>
+    </nav>
     <div class="foot-grid">
       <img src="assets/praxentis-lockup-dark-clean.png" alt="Praxentis" width="120">
       <div class="foot-meta">
